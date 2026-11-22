@@ -98,10 +98,19 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <div className="container-app flex min-h-[70vh] items-center justify-center py-12">
-      <Suspense fallback={<div className="text-slate-500">Loading…</div>}>
-        <RegisterForm />
-      </Suspense>
-    </div>
+    <>
+      <section className="bg-gradient-to-br from-brand-900 via-brand-700 to-accent-600 text-white">
+        <div className="container-app py-10 sm:py-12">
+          <p className="text-xs text-white/70">Home / Register</p>
+          <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">Create account</h1>
+          <p className="mt-1 text-sm text-brand-100">Customer registration — full name, email, phone</p>
+        </div>
+      </section>
+      <div className="container-app flex min-h-[50vh] items-center justify-center py-12">
+        <Suspense fallback={<div className="text-slate-500">Loading…</div>}>
+          <RegisterForm />
+        </Suspense>
+      </div>
+    </>
   );
 }

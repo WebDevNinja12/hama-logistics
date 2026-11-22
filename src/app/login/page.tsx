@@ -73,10 +73,19 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="container-app flex min-h-[70vh] items-center justify-center py-12">
-      <Suspense fallback={<div className="text-slate-500">Loading…</div>}>
-        <LoginForm />
-      </Suspense>
-    </div>
+    <>
+      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-800 text-white">
+        <div className="container-app py-10 sm:py-12">
+          <p className="text-xs text-white/70">Home / Login</p>
+          <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">Sign in</h1>
+          <p className="mt-1 text-sm text-brand-100">Access your Hama Logistics account</p>
+        </div>
+      </section>
+      <div className="container-app flex min-h-[50vh] items-center justify-center py-12">
+        <Suspense fallback={<div className="text-slate-500">Loading…</div>}>
+          <LoginForm />
+        </Suspense>
+      </div>
+    </>
   );
 }
