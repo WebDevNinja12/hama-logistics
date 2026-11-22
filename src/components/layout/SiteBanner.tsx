@@ -11,13 +11,13 @@ export default function SiteBanner() {
 
   return (
     <div className="relative bg-gradient-to-r from-brand-900 via-brand-700 to-accent-600 text-white">
-      <div className="container-app flex items-center justify-center gap-3 py-2.5 pr-10 text-center text-xs sm:text-sm">
-        <span className="font-medium">
+      <div className="container-app flex flex-col items-center justify-center gap-2 py-4 pr-10 text-center sm:flex-row sm:gap-4 sm:py-5">
+        <span className="text-sm font-semibold sm:text-base">
           Hama Logistics · Ship, rent &amp; buy nationwide · Prices in ₦
         </span>
         <Link
           href="/register"
-          className="hidden rounded-full bg-white/15 px-3 py-0.5 font-semibold underline-offset-2 hover:bg-white/25 hover:underline sm:inline"
+          className="rounded-full bg-white/20 px-4 py-1.5 text-sm font-semibold underline-offset-2 transition hover:bg-white/30 hover:underline"
         >
           Create free account
         </Link>
@@ -25,10 +25,10 @@ export default function SiteBanner() {
       <button
         type="button"
         onClick={() => setHidden(true)}
-        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-white/80 hover:bg-white/10 hover:text-white"
+        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-white/80 hover:bg-white/10 hover:text-white sm:right-4"
         aria-label="Dismiss banner"
       >
-        <X className="h-4 w-4" />
+        <X className="h-5 w-5" />
       </button>
     </div>
   );

@@ -75,10 +75,10 @@ export default function LoginPage() {
   return (
     <>
       <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-800 text-white">
-        <div className="container-app py-10 sm:py-12">
-          <p className="text-xs text-white/70">Home / Login</p>
-          <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">Sign in</h1>
-          <p className="mt-1 text-sm text-brand-100">Access your Hama Logistics account</p>
+        <div className="container-app py-16 sm:py-20 lg:py-24">
+          <p className="text-sm text-white/70">Home / Login</p>
+          <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl lg:text-5xl">Sign in</h1>
+          <p className="mt-3 text-base text-brand-100 sm:text-lg">Access your Hama Logistics account</p>
         </div>
       </section>
       <div className="container-app flex min-h-[50vh] items-center justify-center py-12">

@@ -33,9 +33,9 @@ export default function PageBanner({
             "radial-gradient(circle at 20% 50%, rgba(255,255,255,0.25), transparent 45%), radial-gradient(circle at 80% 20%, rgba(249,115,22,0.35), transparent 40%)",
         }}
       />
-      <div className="container-app relative py-10 sm:py-14">
+      <div className="container-app relative py-16 sm:py-20 lg:py-24">
         {crumbs && crumbs.length > 0 && (
-          <nav className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-white/70">
+          <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-white/70">
             <Link href="/" className="hover:text-white">
               Home
             </Link>
@@ -53,11 +53,11 @@ export default function PageBanner({
             ))}
           </nav>
         )}
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-2 max-w-2xl text-sm text-brand-100 sm:text-base">
+          <p className="mt-3 max-w-2xl text-base text-brand-100 sm:text-lg">
             {subtitle}
           </p>
         )}

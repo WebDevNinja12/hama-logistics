@@ -29,10 +29,12 @@ export default function TrackPage() {
   return (
     <>
       <section className="bg-gradient-to-br from-brand-900 via-brand-700 to-accent-600 text-white">
-        <div className="container-app py-10 sm:py-12">
-          <p className="text-xs text-white/70">Home / Track</p>
-          <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">Track shipment</h1>
-          <p className="mt-1 text-sm text-brand-100">Enter your Hama tracking number to see live status</p>
+        <div className="container-app py-16 sm:py-20 lg:py-24">
+          <p className="text-sm text-white/70">Home / Track</p>
+          <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl lg:text-5xl">Track shipment</h1>
+          <p className="mt-3 text-base text-brand-100 sm:text-lg">
+            Enter your Hama tracking number to see live status
+          </p>
         </div>
       </section>
       <div className="container-app py-12">
