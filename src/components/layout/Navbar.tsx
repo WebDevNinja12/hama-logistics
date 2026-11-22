@@ -8,9 +8,6 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
-  { href: "/vehicles", label: "Vehicles" },
-  { href: "/rentals", label: "Rentals" },
-  { href: "/track", label: "Track" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -39,7 +36,10 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link href="/login" className="btn-primary btn-sm ml-2">
+          <Link href="/dashboard" className="btn-ghost btn-sm ml-1">
+            Dashboard
+          </Link>
+          <Link href="/login" className="btn-primary btn-sm ml-1">
             Login
           </Link>
         </nav>
@@ -66,6 +66,13 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          <Link
+            href="/dashboard"
+            className="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50"
+            onClick={() => setOpen(false)}
+          >
+            Dashboard
+          </Link>
           <Link href="/login" className="btn-primary mt-2 w-full" onClick={() => setOpen(false)}>
             Login
           </Link>
