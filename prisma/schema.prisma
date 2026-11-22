@@ -1,0 +1,337 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  SUPER_ADMIN
+  DRIVER
+  VENDOR
+}
+
+enum VehicleCategory {
+  CAR
+  BIKE
+  BUS
+  TRUCK
+  JET
+  HELICOPTER
+  OTHER
+}
+
+enum VehicleCondition {
+  NEW
+  USED
+  CERTIFIED
+}
+
+enum ListingStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+  MAINTENANCE
+}
+
+enum BookingStatus {
+  PENDING
+  PENDING_PAYMENT
+  PAID
+  CONFIRMED
+  ACTIVE
+  COMPLETED
+  RETURNED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  PAYSTACK
+  BANK_TRANSFER
+  WALLET
+  CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  AWAITING_PROOF
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum ShipmentStatus {
+  ORDER_PLACED
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum TicketStatus {
+  VALID
+  USED
+  EXPIRED
+  CANCELLED
+}
+
+enum RideStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum DeliverySpeed {
+  SAME_DAY
+  EXPRESS
+  STANDARD
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String?  @unique
+  phone         String?  @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  role          Role     @default(CUSTOMER)
+  emailVerified Boolean  @default(false)
+  phoneVerified Boolean  @default(false)
+  avatarUrl     String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  wallet        Wallet?
+  payments      Payment[]
+  notifications Notification[]
+  rentalBookings RentalBooking[]
+  saleOrders    SaleOrder[]
+  shipments     Shipment[] @relation("CustomerShipments")
+  supportTickets SupportTicket[]
+  auditLogs     AuditLog[]
+  wishlist      WishlistItem[]
+}
+
+model Wallet {
+  id           String              @id @default(cuid())
+  userId       String              @unique
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance      Decimal             @default(0) @db.Decimal(14, 2)
+  currency     String              @default("NGN")
+  updatedAt    DateTime            @updatedAt
+  transactions WalletTransaction[]
+}
+
+model WalletTransaction {
+  id          String   @id @default(cuid())
+  walletId    String
+  wallet      Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  type        String
+  amount      Decimal  @db.Decimal(14, 2)
+  description String?
+  reference   String?
+  createdAt   DateTime @default(now())
+}
+
+model Vehicle {
+  id           String           @id @default(cuid())
+  category     VehicleCategory
+  make         String
+  model        String
+  year         Int
+  price        Decimal          @db.Decimal(14, 2)
+  condition    VehicleCondition @default(USED)
+  mileage      Int?
+  location     String
+  description  String?          @db.Text
+  specs        Json?
+  status       ListingStatus    @default(AVAILABLE)
+  forSale      Boolean          @default(true)
+  forRent      Boolean          @default(false)
+  rentPerDay   Decimal?         @db.Decimal(12, 2)
+  rentPerHour  Decimal?         @db.Decimal(12, 2)
+  deposit      Decimal?         @db.Decimal(12, 2)
+  seats        Int?
+  transmission String?
+  fuelType     String?
+  color        String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  images       VehicleImage[]
+  saleOrders   SaleOrder[]
+  rentals      RentalBooking[]
+  wishlist     WishlistItem[]
+}
+
+model VehicleImage {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int     @default(0)
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicleId String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@unique([userId, vehicleId])
+}
+
+model SaleOrder {
+  id            String        @id @default(cuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id])
+  vehicleId     String
+  vehicle       Vehicle       @relation(fields: [vehicleId], references: [id])
+  totalAmount   Decimal       @db.Decimal(14, 2)
+  depositAmount Decimal?      @db.Decimal(14, 2)
+  isInstallment Boolean       @default(false)
+  status        BookingStatus @default(PENDING_PAYMENT)
+  agreementUrl  String?
+  qrCode        String?
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  installments  Installment[]
+  payments      Payment[]
+}
+
+model Installment {
+  id          String        @id @default(cuid())
+  saleOrderId String
+  saleOrder   SaleOrder     @relation(fields: [saleOrderId], references: [id], onDelete: Cascade)
+  dueDate     DateTime
+  amount      Decimal       @db.Decimal(14, 2)
+  status      PaymentStatus @default(PENDING)
+  paidAt      DateTime?
+  paymentId   String?
+}
+
+model RentalBooking {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  vehicleId       String
+  vehicle         Vehicle       @relation(fields: [vehicleId], references: [id])
+  pickupLocation  String
+  dropoffLocation String
+  pickupAt        DateTime
+  dropoffAt       DateTime
+  withDriver      Boolean       @default(false)
+  extras          Json?
+  licenseUrl      String?
+  totalAmount     Decimal       @db.Decimal(14, 2)
+  depositAmount   Decimal       @db.Decimal(14, 2)
+  status          BookingStatus @default(PENDING_PAYMENT)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  payments        Payment[]
+}
+
+model Shipment {
+  id              String         @id @default(cuid())
+  trackingNumber  String         @unique
+  userId          String
+  user            User           @relation("CustomerShipments", fields: [userId], references: [id])
+  pickupAddress   String
+  deliveryAddress String
+  itemType        String
+  weightKg        Float
+  speed           DeliverySpeed  @default(STANDARD)
+  insured         Boolean        @default(false)
+  estimatedPrice  Decimal        @db.Decimal(14, 2)
+  finalPrice      Decimal?       @db.Decimal(14, 2)
+  status          ShipmentStatus @default(ORDER_PLACED)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  events          ShipmentEvent[]
+  payments        Payment[]
+}
+
+model ShipmentEvent {
+  id         String         @id @default(cuid())
+  shipmentId String
+  shipment   Shipment       @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  status     ShipmentStatus
+  note       String?
+  location   String?
+  createdAt  DateTime       @default(now())
+}
+
+model Payment {
+  id              String         @id @default(cuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  amount          Decimal        @db.Decimal(14, 2)
+  currency        String         @default("NGN")
+  method          PaymentMethod
+  status          PaymentStatus  @default(PENDING)
+  reference       String         @unique
+  paystackRef     String?
+  proofUrl        String?
+  rejectionReason String?
+  meta            Json?
+  receiptUrl      String?
+  qrCode          String?
+  description     String?
+  saleOrderId     String?
+  saleOrder       SaleOrder?     @relation(fields: [saleOrderId], references: [id])
+  rentalBookingId String?
+  rentalBooking   RentalBooking? @relation(fields: [rentalBookingId], references: [id])
+  shipmentId      String?
+  shipment        Shipment?      @relation(fields: [shipmentId], references: [id])
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel   String
+  title     String
+  body      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SupportTicket {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  subject   String
+  message   String   @db.Text
+  status    String   @default("open")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String?
+  entityId  String?
+  meta      Json?
+  createdAt DateTime @default(now())
+}
