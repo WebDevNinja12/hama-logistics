@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Hama Logistics",
   },
   description:
-    "Book flights, rent cars, buy vehicles, ride e-bikes, buy transport tickets and ship goods with Hama Logistics — a division of Hama Enterprise Ng (CAC RC 8827959).",
+    "Book flights, rent cars, buy vehicles, and ship goods with Hama Logistics — Hama Enterprise Ng (CAC RC 8827959).",
 };
 
 export default function RootLayout({
@@ -30,9 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-NG">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col font-sans antialiased`}
-      >
+      <body className={`${inter.variable} flex min-h-screen flex-col font-sans antialiased`}>
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
