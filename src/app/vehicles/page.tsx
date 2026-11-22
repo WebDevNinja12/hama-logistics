@@ -35,36 +35,45 @@ export default function VehiclesPage() {
   }, [q]);
 
   return (
-    <div className="container-app py-14">
-      <h1 className="section-title">Vehicles for sale</h1>
-      <p className="mt-2 text-slate-600">Cars, bikes and more — prices in ₦</p>
-      <input
-        className="input mt-6 max-w-md"
-        placeholder="Search make or model"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-      />
-      {error && (
-        <p className="mt-4 text-sm text-amber-700">
-          {error}. Connect the database to load live listings.
-        </p>
-      )}
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {vehicles.map((v) => (
-          <Link key={v.id} href={`/vehicles/${v.id}`} className="card p-4 hover:shadow-soft">
-            <p className="font-semibold text-brand-900">
-              {v.year} {v.make} {v.model}
-            </p>
-            <p className="text-brand-700">₦{Number(v.price).toLocaleString("en-NG")}</p>
-            <p className="text-xs text-slate-500">
-              {v.location} · {v.category}
-            </p>
-          </Link>
-        ))}
+    <>
+      <section className="bg-gradient-to-br from-brand-950 via-brand-800 to-brand-600 text-white">
+        <div className="container-app py-10 sm:py-12">
+          <p className="text-xs text-white/70">Home / Vehicles</p>
+          <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">Vehicles for sale</h1>
+          <p className="mt-1 text-sm text-brand-100">
+            Cars, bikes and more — prices in ₦. Login required to buy or enquire.
+          </p>
+        </div>
+      </section>
+      <div className="container-app py-10">
+        <input
+          className="input max-w-md"
+          placeholder="Search make or model"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
+        {error && (
+          <p className="mt-4 text-sm text-amber-700">
+            {error}. Connect the database to load live listings.
+          </p>
+        )}
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {vehicles.map((v) => (
+            <Link key={v.id} href={`/vehicles/${v.id}`} className="card p-4 hover:shadow-soft">
+              <p className="font-semibold text-brand-900">
+                {v.year} {v.make} {v.model}
+              </p>
+              <p className="text-brand-700">₦{Number(v.price).toLocaleString("en-NG")}</p>
+              <p className="text-xs text-slate-500">
+                {v.location} · {v.category}
+              </p>
+            </Link>
+          ))}
+        </div>
+        {!error && vehicles.length === 0 && (
+          <p className="card mt-6 p-6 text-center text-slate-500">No listings yet. Check back soon.</p>
+        )}
       </div>
-      {!error && vehicles.length === 0 && (
-        <p className="card mt-6 p-6 text-center text-slate-500">No listings yet. Check back soon.</p>
-      )}
-    </div>
+    </>
   );
 }
