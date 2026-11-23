@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 function LoginForm() {
   const router = useRouter();
@@ -43,19 +44,19 @@ function LoginForm() {
 
   return (
     <div className="card w-full max-w-md p-6 sm:p-8">
-      <h1 className="text-center text-xl font-bold text-brand-900">Sign in</h1>
+      <h1 className="text-center text-xl font-bold text-primary">Sign in</h1>
       <p className="mt-1 text-center text-sm text-slate-500">Hama Logistics account</p>
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-center text-sm text-red-700">{error}</p>
+        <p className="mt-4 rounded-control bg-danger-50 px-3 py-2 text-center text-sm text-danger-700">{error}</p>
       )}
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div>
-          <label className="label">Email or phone</label>
-          <input name="identifier" className="input" required placeholder="you@example.com" />
+          <label className="label" htmlFor="identifier">Email or phone</label>
+          <input id="identifier" name="identifier" className="input" required placeholder="you@example.com" autoComplete="username" />
         </div>
         <div>
-          <label className="label">Password</label>
-          <input name="password" type="password" className="input" required />
+          <label className="label" htmlFor="password">Password</label>
+          <PasswordInput id="password" name="password" required autoComplete="current-password" />
         </div>
         <button type="submit" className="btn-primary w-full" disabled={loading}>
           {loading ? "Signing in…" : "Sign in"}
@@ -63,7 +64,7 @@ function LoginForm() {
       </form>
       <p className="mt-4 text-center text-sm text-slate-500">
         New?{" "}
-        <Link href={`/register?next=${encodeURIComponent(next)}`} className="font-semibold text-brand-600">
+        <Link href={`/register?next=${encodeURIComponent(next)}`} className="font-semibold text-secondary">
           Create an account
         </Link>
       </p>
@@ -74,11 +75,11 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <>
-      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-800 text-white">
+      <section className="bg-gradient-to-br from-primary via-primary-700 to-secondary text-white">
         <div className="container-app py-16 sm:py-20 lg:py-24">
           <p className="text-sm text-white/70">Home / Login</p>
           <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl lg:text-5xl">Sign in</h1>
-          <p className="mt-3 text-base text-brand-100 sm:text-lg">Access your Hama Logistics account</p>
+          <p className="mt-3 text-base text-white/80 sm:text-lg">Access your Hama Logistics account</p>
         </div>
       </section>
       <div className="container-app flex min-h-[50vh] items-center justify-center py-12">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 function RegisterForm() {
   const router = useRouter();
@@ -46,40 +47,40 @@ function RegisterForm() {
 
   return (
     <div className="card w-full max-w-md p-6 sm:p-8">
-      <h1 className="text-center text-xl font-bold text-brand-900">Create account</h1>
+      <h1 className="text-center text-xl font-bold text-primary">Create account</h1>
       <p className="mt-1 text-center text-sm text-slate-500">Customer registration only</p>
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-center text-sm text-red-700">{error}</p>
+        <p className="mt-4 rounded-control bg-danger-50 px-3 py-2 text-center text-sm text-danger-700">{error}</p>
       )}
       <form onSubmit={onSubmit} className="mt-6 space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="label">First name</label>
-            <input name="firstName" className="input" required />
+            <label className="label" htmlFor="firstName">First name</label>
+            <input id="firstName" name="firstName" className="input" required autoComplete="given-name" />
           </div>
           <div>
-            <label className="label">Last name</label>
-            <input name="lastName" className="input" required />
+            <label className="label" htmlFor="lastName">Last name</label>
+            <input id="lastName" name="lastName" className="input" required autoComplete="family-name" />
           </div>
         </div>
         <div>
-          <label className="label">Email</label>
-          <input name="email" type="email" className="input" required placeholder="you@example.com" />
+          <label className="label" htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" className="input" required placeholder="you@example.com" autoComplete="email" />
         </div>
         <div>
-          <label className="label">Phone</label>
-          <input name="phone" className="input" required placeholder="+234…" />
+          <label className="label" htmlFor="phone">Phone</label>
+          <input id="phone" name="phone" className="input" required placeholder="+234…" autoComplete="tel" />
         </div>
         <div>
-          <label className="label">Password</label>
-          <input name="password" type="password" className="input" required minLength={8} />
+          <label className="label" htmlFor="password">Password</label>
+          <PasswordInput id="password" name="password" required minLength={8} autoComplete="new-password" />
         </div>
         <label className="flex items-start gap-2 text-sm text-slate-600">
-          <input name="terms" type="checkbox" className="mt-1" required />
+          <input name="terms" type="checkbox" className="mt-1 h-4 w-4 rounded border-slate-300" required />
           <span>
             I accept the{" "}
-            <Link href="/terms" className="text-brand-600 hover:underline">terms</Link> and{" "}
-            <Link href="/privacy" className="text-brand-600 hover:underline">privacy policy</Link>
+            <Link href="/terms" className="text-secondary hover:underline">terms</Link> and{" "}
+            <Link href="/privacy" className="text-secondary hover:underline">privacy policy</Link>
           </span>
         </label>
         <button type="submit" className="btn-primary w-full" disabled={loading}>
@@ -88,7 +89,7 @@ function RegisterForm() {
       </form>
       <p className="mt-4 text-center text-sm text-slate-500">
         Already have an account?{" "}
-        <Link href={`/login?next=${encodeURIComponent(next)}`} className="font-semibold text-brand-600">
+        <Link href={`/login?next=${encodeURIComponent(next)}`} className="font-semibold text-secondary">
           Sign in
         </Link>
       </p>
@@ -99,13 +100,11 @@ function RegisterForm() {
 export default function RegisterPage() {
   return (
     <>
-      <section className="bg-gradient-to-br from-brand-900 via-brand-700 to-accent-600 text-white">
+      <section className="bg-gradient-to-br from-primary via-primary-600 to-accent text-white">
         <div className="container-app py-16 sm:py-20 lg:py-24">
           <p className="text-sm text-white/70">Home / Register</p>
           <h1 className="mt-3 text-3xl font-extrabold sm:text-4xl lg:text-5xl">Create account</h1>
-          <p className="mt-3 text-base text-brand-100 sm:text-lg">
-            Customer registration — full name, email, phone
-          </p>
+          <p className="mt-3 text-base text-white/80 sm:text-lg">Customer registration — full name, email, phone</p>
         </div>
       </section>
       <div className="container-app flex min-h-[50vh] items-center justify-center py-12">
